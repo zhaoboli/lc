@@ -11,7 +11,7 @@ public class Solution {
      * @param nodes a array of Undirected graph node
      * @return a connected set of a Undirected graph
      */
-	 
+	 //UnionFind
     public List<List<Integer>> connectedSet(ArrayList<UndirectedGraphNode> nodes) {
         List<List<Integer>> result = new ArrayList();
         if (nodes == null || nodes.size() == 0) {
@@ -70,6 +70,8 @@ public class Solution {
 				Collections.sort(li);
 				result.add(li);
 			}
-    }    
+    }
+
+	//TODO BFS
 }
 
