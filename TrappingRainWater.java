@@ -19,6 +19,9 @@ public class Solution {
 					trappedWater += leftHeight - heights[left];
 				} else {
 					leftHeight = heights[left];
+                    if (leftHeight > rightHeight) {
+                        break;
+                    }
 				}
 				left++;
 			}
@@ -27,6 +30,9 @@ public class Solution {
 					trappedWater += rightHeight - heights[right];
 				} else {
 					rightHeight = heights[right];
+                    if (rightHeight > leftHeight) {
+                        break;
+                    }
 				}
 				right--;
 			}
