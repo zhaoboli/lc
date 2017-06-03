@@ -2,6 +2,7 @@ public class Solution {
     /**
      * @param nums: an array of integers
      * @return: An array of integers that's next permuation
+     * 数学和coding基本功
      */
     public int[] nextPermutation(int[] nums) {
         if (nums == null) {
