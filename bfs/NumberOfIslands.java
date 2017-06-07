@@ -91,5 +91,58 @@ public class Solution {
         }
         return uf.query();
     } 
+
+    //BFS
+    public int numIslands(boolean[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        int n = grid.length;
+        int m = grid[0].length; 
+        int num = 0;
+        Queue<Point> queue = new LinkedList<Point>();
+        int[] dX = {0, 1, 0, -1};
+        int[] dY = {1, 0, -1, 0};
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (!grid[i][j]) {
+                    continue;
+                }
+                num++;
+                grid[i][j] = false;
+                queue.offer(new Point(i, j));
+                while (!queue.isEmpty()) {
+                    int size = queue.size();
+                    for (int index = 0; index < size; index++) {
+                        Point head = queue.poll();
+                        for (int dir = 0; dir < 4; dir++) {
+                            int x = head.x + dX[dir];
+                            int y = head.y + dY[dir];
+                            Point p = new Point(x, y)
+                            if (isInBound(grid, p) && grid[x][y]) {
+                                queue.offer(p);
+                                grid[x][y] = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return num;
+    }
+
+    private boolean isInBound(boolean[][] grid, Point p) {
+        return p.x >= 0 && p.y >= 0 && p.x < grid.length && p.y < grid[0].length;
+    }
+
+    private class Point{
+        public int x;
+        public int y;
+        public Point (int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
 }
 
