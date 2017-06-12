@@ -41,5 +41,36 @@ public class LongestSubstringwithMostKDistinctCharacters {
         }
         return max;
     }
-}
 
+    //Tricky, be careful of edge cases
+    public int lengthOfLongestSubstringKDistinctImprvd(String s, int k) {
+    if (s == null || s.length() == 0) {
+        return 0;
+    }
+    
+    int[] map = new int[256];
+    int j = 0;
+    int distinctCt = 0;
+    int maxLen = 0;
+
+    for (int i = 0; i < s.length(); i++) {
+        while (j < s.length()) {
+            map[s.charAt(j)] += 1;
+            if (map[s.charAt(j)] == 1) {
+                distinctCt++;
+            }
+            j++;
+            if (distinctCt > k) {
+                break;
+            }
+            maxLen = Math.max(j- i, maxLen);
+        }
+        map[s.charAt(i)] -= 1;
+        if (map[s.charAt(i)] == 0) {
+            distinctCt--;
+        }
+    }
+
+    return maxLen;
+}
+}

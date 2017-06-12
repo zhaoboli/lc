@@ -1,10 +1,8 @@
 package com.zhaobo;
 
-/**
- * Created by Nate_Li on 5/4/2017.
- */
 public class MinimumWindowSubstring {
     /**
+     * 5/4/2017 6/10/2017
      * @param source: A string
      * @param target: A string
      * @return: A string denote the minimum window
@@ -40,7 +38,7 @@ public class MinimumWindowSubstring {
         }
         return minStr;
     }
-
+    //暴力判断
     private boolean isValidSubStr(int[] source, int[] target) {
         for (int i = 0; i < target.length; i++) {
             if (source[i] < target[i]) {
