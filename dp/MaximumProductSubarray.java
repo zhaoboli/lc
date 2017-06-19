@@ -11,5 +11,9 @@ public class Solution {
      */
     public int maxProduct(int[] nums) {
         // write your code here
+		if (nums == null || nums.length == 0) {
+			return 0;
+		}
+		
     }
 }
