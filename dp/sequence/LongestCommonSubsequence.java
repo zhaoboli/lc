@@ -1,33 +1,51 @@
 public class Solution {
     /**
-     * @param A, B: Two string
-     * @return: the legnth of the longest common substring.
+     * @param A, B: Two strings
+     * @return: The length of longest common subsequence of A and B.
      */
-    public int longestCommonSubstring (String A, String B) {
-        if (A == null || B == null) {
+    public int longestCommonSubsequence(String A, String B) {
+        if (A == null || B == null || A.length() == 0 || B.length() == 0) {
             return 0;
         }
+        int na = A.length();
+        int nb = B.length();
 
-        int n = A.length();
-        int m = B.length();
-        //结尾是A的第i个和B的第j个的字符串, 并且A i和B j想等， 的最大子字符串 
-        int[][] dp = new int[n][m];
+        int[][] dp = new int[na+1][nb+1];
 
-        int max = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
+        for (int i = 0; i <= na; i++) {
+            for (int j = 0; j <= nb; j++) {
                 if (i == 0 || j == 0) {
                     dp[i][j] = 0;
+                    continue;
                 }
-                if (A.charAt(i) == B.charAt(j)) {
-                    dp[i][j] = 1;
-                    if (i-1 >= 0 && j-1>= 0 && A.charAt(i-1) == B.charAt(j-1)) {
-                       dp[i][j] += dp[i-1][j-1]; 
-                    }
-                } 
-                max = Math.max(dp[i][j], max);
+                if (A.charAt(i - 1) == B.charAt(j - 1)) {
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
             }
         }
-        return max;
+        return dp[na][nb];
+    }
+
+    //recursion
+    public int longestCommonSubsequence(String A, String B) {
+        if (A == null || B == null || A.length() == 0 || B.length() == 0) {
+            return 0;
+        }
+        int na = A.length();
+        int nb = B.length();
+        return lcs(A, na - 1, B, nb - 1);
+    }
+
+    private int lcs(String A, int indexA, String B, int indexB) {
+        if (indexA < 0 || indexB < 0) {
+            return 0;
+        }
+        if (A.charAt(indexA) == B.charAt(indexB)) {
+            return lcs(A, indexA--, B, indexB--) + 1;
+        } else {
+            return Math.max(lcs(A, indexA--, B, indexB), lcs(A, indexA, B, indexB--));
+        }
     }
 }
