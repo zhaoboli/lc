@@ -17,7 +17,6 @@ public class MaximumSubarray {
     int maxSum = Integer.MIN_VALUE;
 
     public int maxSubArray(int[] nums) {
-        // write your code
         if (nums == null || nums.length == 0) {
             return maxSum;
         }
@@ -51,11 +50,11 @@ public class MaximumSubarray {
         if (nums == null || nums.length == 0) {
             return Integer.MIN_VALUE;
         }
-
+        //注意 sum 和minArr的初始值 
         int sum = 0;
         int maxSum = Integer.MIN_VALUE;
         int minArr = 0;
-
+        //注意前缀和要比前缀的最小数组多一位，否则就会出现为0的情况，即使整个数组全是负数，因此, 先求前缀和，再累积求最小数组  
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
             maxSum = Math.max(maxSum, sum - minArr);
