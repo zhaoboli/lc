@@ -6,6 +6,7 @@
  * Notice: You may assume that each input would have exactly one solution.
  * For example, given array S = [-1 2 1 -4], and target = 1.
  * The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+ * 思路还比较好顺，如果３个数大于target则左移，反之右移
  */
 
 public class Solution {
@@ -19,30 +20,24 @@ public class Solution {
 			return -1;
 		}
 		Arrays.sort(numbers);
-		int min = Integer.MAX_VALUE;
-		int sum = -1;
+        //初始化
+        int bestSum = numbers[0] + numbers[1] + numbers[2];
 		for (int i = 0; i < numbers.length - 2; i++) {
-			int currtar = target - numbers[i];
 			int left = i + 1;
 			int right = numbers.length - 1;
 			while (left < right) {
-				if ((numbers[left] + numbers[right]) > currtar) {
-					if (Math.abs(numbers[left] + numbers[right] - currtar) < min) {
-						min = Math.abs(numbers[left] + numbers[right] - currtar);
-						sum = numbers[i] + numbers[left] + numbers[right];
-					}
-					right--;
-				} else if ((numbers[left] + numbers[right]) == currtar){
-					return target;
-				} else {
-					if (Math.abs(numbers[left] + numbers[right] - currtar) < min) {
-						min = Math.abs(numbers[left] + numbers[right] - currtar);
-						sum = numbers[i] + numbers[left] + numbers[right];
-					}
-					left++;
-				}
-			}
+                int sum = numbers[i] + numbers[left] + numbers[right];
+                //此处有犯错
+                if (Math.abs(sum - target) < Math.abs(bestSum - target)) {
+                    bestSum = sum; 
+                }
+                if (sum - target > 0) {
+                    right--;
+                } else {
+                    left++;
+                }
+            }
 		}
-		return sum;
+		return bestSum;
     }
 }
