@@ -1,7 +1,12 @@
 public class Solution {
     /**
+     * Prob: find-minimum-in-rotated-sorted-array No: 159
+     *
      * @param nums: a rotated sorted array
      * @return: the minimum number in the array
+     * 思路：
+     * 二分法：满足某个条件的第一个值
+     * 转化为满足小于end的第一个值，此处不能用start，因为如果是未打断顺序的序列，会出现无解的情况
      */
     public int findMin(int[] nums) {
         if (nums == null || nums.length == 0) {
