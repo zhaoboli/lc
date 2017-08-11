@@ -32,22 +32,42 @@
  */
  public class Solution {
 
+    private int[] ring;
+    private int k;
     // @param n a positive integer
     // @param k a positive integer
     // @return a Solution object
     public static Solution create(int n, int k) {
-        
+        this.ring = new int[n];        
+        this.k = k;
     }
 
     // @param machine_id an integer
     // @return a list of shard ids
     public List<Integer> addMachine(int machine_id) {
-        
+        Random rand = new Random();
+        List<Integer> res = new ArrayList<Integer>();
+        int counter = 0;
+        while (counter < k) {
+            int i = rand.nextInt();
+            if (ring[i % ring.length] == 0) {
+                ring[i % ring.length] = machine_id;
+                res.add(i % ring.length);
+                counter++;
+            } else {
+                continue; 
+            }
+        }
+        return res;
     }
 
     // @param hashcode an integer
     // @return a machine id
     public int getMachineIdByHashCode(int hashcode) {
-        
+        int index = hashcode % ring.length;
+        while (ring[index] != 0) {
+            index++;
+        }
+        return ring[index];
     }
 }
