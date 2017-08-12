@@ -1,4 +1,5 @@
 /**
+ * Prob: k-closest-points No: 612
  * Definition for a point
  * class Point {
  *  int x;
@@ -6,6 +7,8 @@
  *  Point() { x = 0; y = 0; }
  *  Point(int a, int b) { x = a; y = b;}
  *  }
+ *  思路：
+ *  很容易想到用堆
  */
 
 public class Solution {
@@ -14,9 +17,9 @@ public class Solution {
      * @param k an integer
      * return the k closest points
      */
+    //注意这里要用global的对象，因为Comparator是个inner class
     private Point globalOrigin = null;
     public Point[] kClosest(Point[] points, Point origin, int k) {
-        // Write your code here
         if (points == null || points.length == 0) {
             return null;
         }
