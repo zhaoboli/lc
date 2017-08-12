@@ -1,7 +1,7 @@
 /**
-Merge k sorted linked lists and return it as one sorted list.
-
-Analyze and describe its complexity.
+ * Prob: merge-k-sorted-lists No: 104
+ * Merge k sorted linked lists and return it as one sorted list.
+ * Analyze and describe its complexity.
 
 Given lists:
 
@@ -13,6 +13,7 @@ Given lists:
 return -1->2->4->null.
 
 */
+
 /**
  * Definition for ListNode.
  * public class ListNode {
@@ -30,34 +31,33 @@ public class Solution {
      * @return: The head of one sorted list.
      */
     public ListNode mergeKLists(List<ListNode> lists) {  
-        // write your code here
         if (lists == null || lists.size() == 0) {
 			return null;
 		}
 		
 		Queue<ListNode> queue = new PriorityQueue<ListNode>(lists.size(), new Comparator<ListNode>() {
+            @Override
 			public int compare(ListNode n1, ListNode n2) {
 				return n1.val - n2.val;
 			}
 		});
-		
-		for (int i = 0; i < lists.size(); i++) {
-			ListNode node = lists.get(i);
-			while(node != null) {
-				queue.offer(node);
-				node = node.next;
-			}
-		}
-		
-		ListNode dummy = new ListNode(0);
-		ListNode head = dummy;
-		while(!queue.isEmpty()) {
-			ListNode node = queue.poll();
-			head.next = node;
-			head = head.next;
-		}
-		head.next = null;
-		
-		return dummy.next;
+        
+        for (ListNode node : lists) {
+            if (node != null) {
+                queue.offer(node);
+            }
+        }
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+        //假如总共有n个点的话，那么复杂度是nlogk
+        while (!queue.isEmpty()) {
+            ListNode min = queue.poll();
+            tail.next = min;
+            if (min.next != null) {
+                queue.offer(min.next);
+            }
+            tail = tail.next;
+        }
+        return dummy.next;
     }
 }
