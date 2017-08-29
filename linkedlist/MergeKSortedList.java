@@ -60,4 +60,45 @@ public class Solution {
         }
         return dummy.next;
     }
+
+    //归并排序的做法，分治
+    //top down 自顶向下
+    //logk 层， 每层合并耗费N, O(Nlogk)
+    public ListNode mergeKLists(List<ListNode> lists) {
+        if (lists == null || lists.size() == 0) {
+            return null;
+        }
+        return mergeList(lists, 0, lists.size() - 1);
+    }
+    private ListNode mergeList(List<ListNode> lists, int start, int end) {
+        if (start >= end) {
+            return lists.get(start);
+        }
+        int mid = start + (end - start) / 2;
+        ListNode left = mergeList(lists, start, mid);
+        ListNode right = mergeList(lists, mid + 1, end);
+        return merge(left, right);
+    }
+
+    private ListNode merge(ListNode left, ListNode right) {
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+        while (left != null & right != null) {
+            if (left.val < right.val) {
+                curr.next = left;
+                left = left.next;
+            } else {
+                curr.next = right;
+                right = right.next;
+            }
+            curr = curr.next;
+        }
+        if (left != null) {
+            curr.next = left;
+        }
+        if (right != null) {
+            curr.next = right;
+        }
+        return dummy.next;
+    }
 }
