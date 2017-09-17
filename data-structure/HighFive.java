@@ -19,47 +19,6 @@ public class Solution {
      * @return find the average of 5 highest scores for each person
      * Map<Integer, Double> (student_id, average_score)
      */
-     //overtime
-    public Map<Integer, Double> highFive(Record[] results) {
-        // Write your code here
-        if (results == null || results.length == 0) {
-			return null;
-		}
-
-		Map<Integer, Queue<Integer>> map = new HashMap<Integer, Queue<Integer>>();
-		for (int i = 0; i < results.length; i++) {
-			int id = results[i].id;
-			int score = results[i].score;
-			if(map.containsKey(id)) {
-				map.get(id).offer(score);
-			} else {
-				Queue q = new PriorityQueue<Integer>(5, new Comparator<Integer>() {
-				public int compare (Integer i1, Integer i2) {
-					return -(i1 - i2);
-				}});
-				q.offer(score);
-				map.put(id, q);
-			}
-		}
-
-		Map<Integer, Double> res = new HashMap<Integer, Double>();
-		for(Map.Entry<Integer, Queue<Integer>> entry: map.entrySet()) {
-			int id = (int)entry.getKey();
-			Queue<Integer> heap = (Queue<Integer>)entry.getValue();
-			int counter = 0;
-			double sum = 0;
-			double average = 0;
-			while (!heap.isEmpty() && counter < 5) {
-				sum += (int)heap.poll();
-				counter++;
-			}
-			average = sum / counter;
-			res.put(id, average);
-		}
-		return res;
-    }
-
-
 	public Map<Integer, Double> highFiveTwo(Record[] results) {
         // Write your code here
         if (results == null || results.length == 0) {
@@ -106,9 +65,7 @@ public class Solution {
 		return res;
     }
 
-    //overtime
     public Map<Integer, Double> highFive(Record[] results) {
-        // Write your code here
         if (results == null || results.length == 0) {
             return null;
         }
@@ -119,13 +76,13 @@ public class Solution {
                 queue.offer(rec.score);
                 map.put(rec.id, queue);
                 continue;
-            }
+            } 
             PriorityQueue<Integer> q = map.get(rec.id);
             if (q.size() < 5) {
                 q.offer(rec.score);
                 continue;
-            }
-            if (rec.score > q.peek()) {
+            } 
+            if (q.peek() < rec.score) {
                 q.poll();
                 q.offer(rec.score);
             }
