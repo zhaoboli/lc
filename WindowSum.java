@@ -1,0 +1,56 @@
+/**
+ * Prob: window-sum No: 604
+ * Given an array of n integer, and a moving window(size k), 
+ * move the window at each iteration from the start of the array, find the sum of the element inside the window at each moving
+ * Example
+ * For array [1,2,7,8,5], moving window size k = 3. 
+ * 1 + 2 + 7 = 10
+ * 2 + 7 + 8 = 17
+ * 7 + 8 + 5 = 20
+ * return [10,17,20]
+ */
+public class Solution {
+    /**
+     * @param nums a list of integers
+     * @return the sum of the element inside the window at each moving
+     */
+    public int[] winSum(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k > nums.length) {
+            return new int[0];
+        }
+        int[] winSum = new int[nums.length - k + 1];
+        for (int i = 0; i < k; i++) {
+            winSum[0] += nums[i];
+        }
+        for (int i = k; i < nums.length; i++) {
+            winSum[i-k+1] = winSum[i-k] + nums[i] - nums[i-k];
+        }
+        return winSum;
+    }
+}
+
+public class Solution {
+    /**
+     * @param nums a list of integers.
+     * @return the sum of the element inside the window at each moving.
+     */
+    public int[] winSum(int[] nums, int k) {
+        // write your code here
+        if (nums == null || nums.length == 0 || nums.length < k) {
+            return new int[0];
+        }
+
+        //initialization
+        int[] sum = new int[nums.length - k + 1];
+        for (int i = 0; i < k; i++) {
+            sum[0] += nums[i];
+        }
+
+        for (int j = 1; j < sum.length; j++) {
+            sum[j] -= nums[j - 1];
+            sum[j] += sum[j - 1];
+            sum[j] += nums[j + k -1];
+        }
+        return sum;
+    }
+}
