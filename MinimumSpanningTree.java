@@ -6,6 +6,11 @@
  * Return the connections sorted by the cost, or sorted city1 name if their cost is same, or sorted city2 if their city1 name is also same.
  * Example: Gievn the connections = ["Acity","Bcity",1], ["Acity","Ccity",2], ["Bcity","Ccity",3]
  * Return ["Acity","Bcity",1], ["Acity","Ccity",2]
+ * 思路：
+ * 把connections按cost=>city1=>city2从小到大排列
+ * 然后把整个connections遍历一遍，对所有city编号,为用union find做铺垫
+ * 贪心的思想从小到大把connections往里放，借用union find, 如果connection的两个城市已经连通，则跳过
+ * 最后图论判断成功与否,边数 == 结点数 - 1
  */
 /**
  * Definition for a Connection.
@@ -25,11 +30,11 @@ public class Solution {
      * @return a list of connections from results
      */
     public List<Connection> lowestCost(List<Connection> connections) {
-        if (connections == null || connections.length == 0) {
+        if (connections == null || connections.size() == 0) {
             return new ArrayList<Connection>();
         }
         Collections.sort(connections, comp);    
-        Map<Connection> map = new HashMap<Connection>();
+        Map<String, Integer> map = new HashMap<String, Integer>();
         int index = 0;
         for (Connection conn : connections) {
             if (!map.containsKey(conn.city1)) {
@@ -47,17 +52,18 @@ public class Solution {
         for (Connection conn : connections) {
             int c1 = map.get(conn.city1);
             int c2 = map.get(conn.city2);
-            if (find(c1, father) == find(c2.father)) {
+            if (find(c1, father) == find(c2, father)) {
                 continue;
             }     
             connect(c1, c2, father);
             res.add(conn);
         }
-        if (result.size() != n - 1) {
+        if (res.size() != index - 1) {
             return new ArrayList<Connection>();
         }
         return res;
     }
+    
     private int find(int index, int[] father) {
         if (father[index] == index){
             return index;
@@ -66,9 +72,9 @@ public class Solution {
     }
 
     private void connect(int i1, int i2, int[] father) {
-        int root1 = find(i1);
-        int root2 = find(i2);
-        if (root1 = root2) {
+        int root1 = find(i1, father);
+        int root2 = find(i2, father);
+        if (root1 == root2) {
             return;
         }
         father[root1] = father[root2];
@@ -84,6 +90,5 @@ public class Solution {
             }
             return conn1.city1.compareTo(conn2.city1);
         }
-    }
-
+    };
 }
