@@ -1,4 +1,5 @@
 /**
+ * Prob: binary-tree-serialization No: 7
  * Definition of TreeNode:
  * public class TreeNode {
  *     public int val;
@@ -8,6 +9,7 @@
  *         this.left = this.right = null;
  *     }
  * }
+ * 
  */
 class Solution {
     /**
@@ -15,18 +17,66 @@ class Solution {
      * to serialize a binary tree which denote by a root node to a string which
      * can be easily deserialized by your own "deserialize" method later.
      */
-    public String serialize(TreeNode root) {
-        // write your code here
+public static String serialize(TreeNode root) {
+        if (root == null) {
+            return "{}";
+        }
+        List<TreeNode> queue = new ArrayList<>();
+        queue.add(root);
+        for (int i = 0; i < queue.size(); i++) {
+            TreeNode head = queue.get(i);
+            if (head == null) {
+                continue;
+            }
+            queue.add(head.left);
+            queue.add(head.right);
+        }
+        while (queue.get(queue.size() - 1) == null) {
+            queue.remove(queue.size() - 1);
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        for (int i = 0; i < queue.size(); i++) {
+            if (queue.get(i) == null) {
+                sb.append('#');
+            } else {
+                sb.append(queue.get(i).val);
+            }
+            sb.append(',');
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("}");
+        return sb.toString();
     }
 
-    /**
-     * This method will be invoked second, the argument data is what exactly
-     * you serialized at method "serialize", that means the data is not given by
-     * system, it's given by your own serialize method. So the format of data is
-     * designed by yourself, and deserialize it here as you serialize it in
-     * "serialize" method.
-     */
-    public TreeNode deserialize(String data) {
-        // write your code here
+    public static TreeNode deserialize(String data) {
+        if (data == "{}") {
+            return null;
+        }
+        String trimedData= data.substring(1, data.length() - 1);
+        String[] source = trimedData.split(",");
+        Queue<TreeNode> queue = new LinkedList<>();
+        TreeNode root = new TreeNode(Integer.parseInt(source[0]));
+        TreeNode head = root;
+        boolean isLeftChild = true;
+
+        for (int curr = 1; curr < source.length; curr++) {
+            String s = source[curr];
+            TreeNode node = null;
+            if (!s.equals("#")) {
+                node = new TreeNode(Integer.parseInt(s));
+                queue.offer(node);
+            }
+            if (isLeftChild) {
+                head.left = node;
+            } else {
+                head.right = node;
+            }
+            isLeftChild = !isLeftChild;
+            if (isLeftChild) {
+                head = queue.poll();
+            }
+        }
+        return root;
     }
 }
