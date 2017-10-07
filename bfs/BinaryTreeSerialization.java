@@ -10,6 +10,9 @@
  *     }
  * }
  * 
+ * 思路：
+ * 这里用ArrayList<>而非用Queue<>,是因为前者可以放空元素，那么在序列化的时候就更简单点，这个因为Queue<>这里的实现是LinkedList
+ * Integer.parseInt and Integer.valueOf区别, valueOf internally calls parseInt
  */
 class Solution {
     /**
