@@ -7,6 +7,8 @@
  * By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,1,2,1,1].
  * Given the list [1,[4,[6]]], By calling next repeatedly until hasNext returns false, 
  * the order of elements returned by next should be: [1,4,6].
+ * 思路：
+ * 这里有嵌套(递归)，用两个栈来实现，每次如果栈头是个list就把它弹出，拆解之后再入栈，直到栈头是个integer为止
  */
 /**
  * // This is the interface that allows for creating nested lists.
