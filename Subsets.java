@@ -1,4 +1,5 @@
 /**
+ * Prob: subsets No: 17
 Given a set of distinct integers, return all possible subsets.
 Elements in a subset must be in non-descending order.
 The solution set must not contain duplicate subsets.
@@ -40,4 +41,31 @@ class Solution {
 			path.remove(path.size() - 1);
 		}
 	}
+    /**
+     * 集合中的每一个数只可能是出现或者不出现，那么所对应的二进制序列是0,或者1;
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            result.add(new ArrayList<Integer>());
+            return result;
+        }
+        int n = nums.length;
+        int num = 1 << n;
+        Arrays.sort(nums);
+        for (int i = 0; i < num; i++) {
+            printSet(i, n, nums, result); 
+        }
+        return result;
+    }
+
+    private void printSet(int num, int n, int[] nums,  List<List<Integer>> result) {
+        List<Integer> path = new ArrayList<Integer>();  
+        for (int i = 0; i < n; i++) {
+            if (((1 << i) & num) > 0) {
+                path.add(nums[i]);
+            }
+        }
+        result.add(path);
+    }
 }
