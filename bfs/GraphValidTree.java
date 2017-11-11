@@ -6,12 +6,17 @@
  * Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
  * Given n = 5 and edges = [[0, 1], [0, 2], [0, 3], [1, 4]], return true.
  * Given n = 5 and edges = [[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]], return false.
+ * 思路：
+ * 如果是满足树条件的图，那么要满足edges = vertex - 1; and every vertex is connected
+ * union find,那么1.连接完后判断所有点的father是否都为一个点 2.或者判断在连接前判断这两个点是否已经连接
+ * bfs:同理edges = vertex - 1 必须满足
+ * 把所有边遍历完成，放在Map<Vertex, Set<Neighbor>> 的一个map里，用bfs遍历这个map,统计新出现的点，放入一个set,如果是满足树条件的
+ * 图，那么所有的点肯定会出现, set.size() == n;
  */
 
-//union find
+//union find 1.
 public class Solution {
 	int[] father;
-	//Union find
 	public boolean validTree(int n, int[][] edges) {
 		
 		if (edges == null || edges.length != n - 1) {
@@ -49,6 +54,53 @@ public class Solution {
 		}
 		father[find(a)] = father[find(b)];
 	}
+}
+public class Solution {
+
+    public boolean validTree(int n, int[][] edges) {
+        if (edges == null) {
+            return false;
+        }
+        if (n - 1 != edges.length) {
+            return false;
+        }
+
+        UnionFind uf = new UnionFind(n);
+        for (int i = 0; i < edges.length; i++) {
+            if (uf.find(edges[i][0]) == uf.find(edges[i][1])) {
+                return false;
+            }
+            uf.connect(edges[i][0], edges[i][1]);
+        }
+        return true;
+    }
+
+    private class UnionFind {
+
+        private int[] father = null;
+
+        public UnionFind(int n) {
+            this.father = new int[n];
+            for (int i = 0; i < n; i++) {
+                this.father[i] = i;
+            }
+        }
+
+        public void connect(int i1, int i2) {
+            if (find(i1) == find(i2)) {
+               return;
+            } 
+            father[find(i1)] = find(i2);
+        }
+
+        public int find(int i) {
+            if (father[i] == i) {
+                return i;
+            }
+            return father[i] = find(father[i]);
+        }
+    }
+
 }
 //bfs
 public class Solution {
