@@ -1,4 +1,5 @@
 /**
+ * Prob: remove-duplicates-from-sorted-list No: 112
 * Given a sorted linked list, delete all duplicates such that each element appear only once
 * Given 1->1->2, return 1->2.
 *
@@ -54,4 +55,25 @@ public class Solution {
         }
         return head;
     }
+
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode next = head.next;
+        
+        while (head != null && next != null) {
+            if (head.val == next.val) {
+                next = next.next;
+                head.next = next;
+                continue;
+            }
+            head = head.next;
+            next = next.next;
+        }
+        return dummy.next;
+    }
+
 }
