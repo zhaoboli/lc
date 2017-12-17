@@ -1,3 +1,18 @@
+/**
+ * Prob: trapping-rain-water-ii No: 364
+ * Given n x m non-negative integers representing an elevation map 2d where the area of each cell is 1 x 1, 
+ * compute how much water it is able to trap after raining.
+ *
+ * Given 5*4 matrix
+ *
+ * [12,13,0,12]
+ * [13,4,13,12]
+ * [13,8,10,12]
+ * [12,13,12,12]
+ * [13,13,13,13]
+ *
+ * 思路：从外往里挤
+ */
 public class Solution {
     /**
      * @param heights: a matrix of integers
@@ -39,6 +54,7 @@ public class Solution {
                 }
                 if (heights[row][col] < ce.height) {
                     trappedWater += ce.height - heights[row][col];
+                    //注意这里填完水后的高度是head.height,即ce.height
                     heights[row][col] = ce.height;
                 }
                 queue.offer(new Cell(row, col, heights[row][col]));
