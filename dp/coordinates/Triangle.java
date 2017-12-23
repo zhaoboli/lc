@@ -11,6 +11,7 @@
  * the minimum path sum from top to bottom is 11(i.e 2 + 3 + 1 = 11) 
  * 思路：
  * 经典的动规，对空间优化的话可以用i%2
+ * traverse:从顶点(0,0)开始向下走，那么可以走到x+1,y+1, 或者x+1, y,深搜
  *
 public class Solution {
     /**
@@ -77,4 +78,71 @@ public class Solution {
         }
         return minTotal;
     }
+
+    //version: traverse
+    int sum = Integer.MAX_VALUE;
+    public int minimumTotal(int[][] triangle) {
+        if (triangle == null || triangle.length == 0) {
+            return 0;
+        }
+        int n = triangle.length;
+        traverse(triangle, 0, 0, 0);
+        return sum;
+    }
+
+    private void traverse(int[][] triangle, int x, int y, int total) {
+        if (x == triangle.length) {
+            if (total < sum) {
+                sum = total;
+            }
+            return;
+        }
+        traverse(triangle, x+1, y, total + triangle[x][y]);
+        traverse(triangle, x+1, y+1, total + triangle[x][y]);
+    }
+
+    //version: devide & conqure
+    public int minimumTotal(int[][] triangle) {
+        if (triangle == null || triangle.length == 0) {
+            return 0;
+        }
+        return miniHelper(triangle, 0, 0);
+    }
+    
+    private int miniHelper(int[][] triangle, int x, int y) {
+        if (x == triangle.length) {
+            return 0;
+        }
+        int left = miniHelper(triangle, x+1, y);
+        int right = miniHelper(triangle, x+1, y+1);
+        return triangle[x][y] + Math.min(left, right);
+    }
+
+    //version: devide & conqure with memorization
+    public int minimumTotal(int[][] triangle) {
+        if (triangle == null || triangle.length == 0) {
+            return 0;
+        }
+        int n = triangle.length;
+        int[][] cache = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                cache[i][j] = Integer.MAX_VALUE;
+            }
+        }
+        return minHelper(triangle, cache, 0, 0);
+    }
+    
+    private int minHelper(int[][] triangle, int[][] cache, int x, int y) {
+        if (x == triangle.length) {
+            return 0;
+        }
+        if (cache[x][y] != Integer.MAX_VALUE) {
+            return cache[x][y];
+        }
+        int left = minHelper(triangle, cache, x+1, y);
+        int right = minHelper(triangle, cache, x+1, y+1);
+        cache[x][y] = Math.min(left, right) + triangle[x][y]; 
+        return cache[x][y];
+    } 
 }
