@@ -1,3 +1,7 @@
+/**
+ * Prob: minimum-path-sum No: 110
+ * 思路：坐标型动规，跟triangle,binary_tree_maximum_path_sum很像
+ */
 public class Solution {
     /**
      * @param grid: a list of lists of integers.
