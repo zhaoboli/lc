@@ -1,5 +1,6 @@
 /**
  * Prob: subsets No: 17
+ * 思路：典型的深搜
 Given a set of distinct integers, return all possible subsets.
 Elements in a subset must be in non-descending order.
 The solution set must not contain duplicate subsets.
@@ -37,6 +38,7 @@ class Solution {
 		//result.add(new ArrayList<Intege>(path));
 		for(int index = startIndex; index < nums.length; index++) {
 			path.add(nums[index]);
+            //注意此处是index+1,而非index+1, 例子是{1, 2}, {1, 3}反例{2, 2}
 			helper(nums, path, index + 1, result);
 			path.remove(path.size() - 1);
 		}
