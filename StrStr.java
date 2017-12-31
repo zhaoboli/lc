@@ -1,3 +1,11 @@
+For a given source string and a target string, you should output the first index(from 0) of target string in source string.
+If target does not exist in source, just return -1.
+Example
+If source = "source" and target = "target", return -1.
+If source = "abcdabcdefg" and target = "bcd", return 1.
+/**
+ * Prob: strstr No: 13
+ */
 class Solution {
 
     /** return a index to the first occurence of target in source
@@ -34,26 +42,23 @@ class Solution {
      }
     
     //O(n) time complexity
-    public int strStrOn(String source, String target) {
+    public int strStr(String source, String target) {
         if (source == null || target == null) {
             return -1;
         }
         if (target.length() == 0) {
             return 0;
         }
-
         for (int i = 0; i < source.length() - target.length() + 1; i++) {
             for (int j = 0; j < target.length(); j++) {
-                if (source.charAt(i + j) == target.charAt(j)) {
-                    if (j == target.length() -1) {
-                        return i;
-                    }
-                    //j++;error uncaught
-                } else {
+                if (source.charAt(i+j) != target.charAt(j)) {
                     break;
+                }
+                if (j == (target.length() - 1)) {
+                    return i;
                 }
             }
         }
         return -1;
-     }
+    }
 }
