@@ -1,3 +1,13 @@
+Given two arrays, write a function to compute their intersection.
+Each element in the result must be unique.
+The result can be in any order.
+Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2].
+/**
+ * Prob: intersection-of-two-arrays No: 547
+ * 起源：当搜索引擎找到(hello + world)时，假如是分别基于hello和world来找的话，那么第一步结果
+ * 应该是两个url 的topk的数组，分别对应于hello和world，因为要查询的结果是(hello + world),那么此时
+ * 应该把两个url的数组合并 
+ */
 public class Solution {
     /**
      * @param nums1 an integer array
@@ -92,5 +102,52 @@ public class Solution {
             return true;
         }
         return false;
+    }
+    
+    //HashTable version
+    //can add another HashTable to trade memory for time
+
+    public int[] intersection(int[] nums1, int[] nums2) {
+        if (nums1 == null || nums1.length == 0 || nums2 == null || nums2.length == 0) {
+            return new int[0];
+        }
+        //Hash the smaller Array
+        int[] sourceArr;
+        int[] targetArr;
+        List<Integer> result = new ArrayList<Integer>();
+
+        if (nums1.length > nums2.length) { 
+            sourceArr = nums2;
+            targetArr = nums1;
+        } else {
+            sourceArr = nums1;
+            targetArr = nums2;
+        }
+        Set<Integer> set = new HashSet<Integer>();
+        //O(m)
+        for (int i = 0; i < sourceArr.length; i++) {
+            if (set.contains(sourceArr[i])){
+                continue;
+            }
+            set.add(sourceArr[i]);
+        }
+
+        //O(nlogn)
+        Arrays.sort(targetArr);
+        //O(n)
+        for (int j = 0; j < targetArr.length; j++) {
+            if (j > 0 && (targetArr[j] == targetArr[j-1])) {
+                continue;
+            } 
+            if (set.contains(targetArr[j])) {
+                result.add(targetArr[j]);
+            }
+        }
+        int[] resultArr = new int[result.size()]; 
+        for (int k = 0; k < result.size(); k++) {
+            resultArr[k] = result.get(k);
+        }
+        //total = O (m + n + nlogn)
+        return resultArr;
     }
 }
