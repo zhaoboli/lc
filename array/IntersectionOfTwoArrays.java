@@ -15,7 +15,7 @@ public class Solution {
      * @return an integer array
      */
     public int[] intersection(int[] nums1, int[] nums2) {
-        // O(nlogn + mlogm + min(m, n)); O(1) space
+        // Time: O(nlogn)  Space: O(1)
         if (nums1 == null || nums2 == null) {
             return null;
         } 
@@ -48,7 +48,7 @@ public class Solution {
         }
         return res;
     }
-    //O min(m,n)log min(m,n) + max(m,n) log min(m,n) 
+    // Space: O(n) Time: O((n+m)logm) m: smaller array's length
     public int[] intersection(int[] nums1, int[] nums) {
         if (nums1 == null || nums2 == null) {
             return null;
@@ -104,50 +104,53 @@ public class Solution {
         return false;
     }
     
-    //HashTable version
-    //can add another HashTable to trade memory for time
-
+    //HashTable version Space: O(n) Time: O(n)
     public int[] intersection(int[] nums1, int[] nums2) {
-        if (nums1 == null || nums1.length == 0 || nums2 == null || nums2.length == 0) {
+        if (nums1 == null || nums2 == null) {
             return new int[0];
         }
-        //Hash the smaller Array
-        int[] sourceArr;
-        int[] targetArr;
-        List<Integer> result = new ArrayList<Integer>();
 
-        if (nums1.length > nums2.length) { 
-            sourceArr = nums2;
-            targetArr = nums1;
-        } else {
-            sourceArr = nums1;
-            targetArr = nums2;
-        }
         Set<Integer> set = new HashSet<Integer>();
-        //O(m)
-        for (int i = 0; i < sourceArr.length; i++) {
-            if (set.contains(sourceArr[i])){
-                continue;
-            }
-            set.add(sourceArr[i]);
+        for (int i = 0; i < nums1.length; i++) {
+            set.add(nums1[i]);
         }
 
-        //O(nlogn)
-        Arrays.sort(targetArr);
-        //O(n)
-        for (int j = 0; j < targetArr.length; j++) {
-            if (j > 0 && (targetArr[j] == targetArr[j-1])) {
-                continue;
-            } 
-            if (set.contains(targetArr[j])) {
-                result.add(targetArr[j]);
+        Set<Integer> resultSet = new HashSet<Integer>();
+        for (int j = 0; j < nums2.length; j++) {
+            if (set.contains(nums2[j]) && !resultSet.contains(nums2[j])) {
+                resultSet.add(nums2[j]);
             }
         }
-        int[] resultArr = new int[result.size()]; 
-        for (int k = 0; k < result.size(); k++) {
-            resultArr[k] = result.get(k);
+        int[] result = new int[resultSet.size()];
+        int index = 0;
+        for (Integer i : resultSet) {
+            result[index++] = i;
         }
-        //total = O (m + n + nlogn)
-        return resultArr;
+        return result;
+    }
+
+    // Space: O(n) Time: O(n) optimized HashTable version
+    public int[] intersection(int[] nums1, int[] nums2) {
+        if (nums1 == null || nums2 == null) {
+            return null;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int i : nums1) {
+            set.add(i);
+        }
+
+        for (int j : nums2) {
+            if (set.contains(j)) {
+                result.add(j);
+                set.remove(j);
+            }
+        }
+        int[] ret = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            ret[i] = result.get(i);
+        }
+        return ret;
     }
 }
